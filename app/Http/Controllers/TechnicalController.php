@@ -181,9 +181,15 @@ class TechnicalController extends Controller
             }
         }
 
+        // Delete messages where the technician is involved
+        DB::table('messages')
+            ->where('technician_id', $id)
+            ->orWhere('customer_id', $id)
+            ->delete();
+
         // Delete the corresponding user record from the users table
         DB::table('users')->where('id', $id)->delete();
 
-        return redirect()->route('admin.technical')->with('success', 'technical deleted successfully.');
+        return redirect()->route('admin.technical')->with('success', 'Technician and associated messages deleted successfully.');
     }
 }
