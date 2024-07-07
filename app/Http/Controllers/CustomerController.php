@@ -39,17 +39,18 @@ class CustomerController extends Controller
     {
         // Fetch the customer by ID
         $customer = DB::table('users')->where('id', $id)->where('role', 'user')->first();
-
+    
         if ($customer) {
             // Delete related tickets first
-            DB::table('tickets')->where('user_id', $id)->delete();
-
+            DB::table('tickets')->where('customer_id', $id)->delete();
+    
             // Delete the customer
             DB::table('users')->where('id', $id)->delete();
-
+    
             return redirect()->route('admin.customer')->with('success', 'Customer and related tickets deleted successfully');
         }
-
+    
         return redirect()->route('admin.customer')->with('error', 'Customer not found');
     }
+    
 }
